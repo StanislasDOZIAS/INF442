@@ -15,4 +15,4 @@
 - lecteur de fichier cpp
 
 ## algorithmes utiles :
-- K-means()
+- K-means()a
