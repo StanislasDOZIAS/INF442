@@ -30,3 +30,15 @@
 *.exe
 *.out
 *.app
+
+# Documentation doxygen
+doc/
+bin/
+
+# dossier auxiliaire personnel
+tmp/
+.vscode/
+*.zip
+
+# executable
+inf442
