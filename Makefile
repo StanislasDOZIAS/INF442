@@ -4,6 +4,7 @@ SRCDIR = src/
 BIN = bin/
 DOCS = doc/
 #INCL = include/
+SCRIPTS = recolte_data.sh
 
 FILES := $(shell find $(SRCDIR) -name '*.cpp')
 OBJ:= $(FILES:$(SRCDIR)%.cpp=$(BIN)%.o)
@@ -13,7 +14,7 @@ FLAGS = -std=c++11
 LDLIBS = -D_REENTRANT -lm -D_GNU_SOURCE
 
 .PHONY: all
-all: $(NAME)
+all: $(NAME) scripts
 
 $(NAME): $(OBJ)
 	@printf "[\e[1;34mEn cours\e[0m] Assemblement\n"
@@ -25,6 +26,10 @@ $(BIN)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(dir $@)
 #	$(CC) -c $(FLAGS) -I $(INCL) -o $@ $< $(LDLIBS)
 	$(CC) -c $(FLAGS) -o $@ $< $(LDLIBS)
+
+.PHONY: scripts
+scripts:
+	@sh $(SCRIPTS)
 
 .PHONY: debug
 debug: FLAGS += -D D_FLAG
