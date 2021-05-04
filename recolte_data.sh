@@ -19,7 +19,7 @@ rm -rf RATP_GTFS_FULL.zip
 fi
 
 
-for i in 3 4 5 6 7 8 9; do
+for i in 4 5 6 7 8 9; do
 if [ ! -f "trafic-annuel-entrant-par-station-du-reseau-ferre-201$i.csv" ]; then
 curl "https://data.ratp.fr/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-201$i/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B" --output trafic-annuel-entrant-par-station-du-reseau-ferre-201$i.csv
 fi

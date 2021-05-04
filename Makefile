@@ -3,7 +3,7 @@ ZIP_FILE = DOZIAS_DURAND_$(NAME).zip
 SRCDIR = src/
 BIN = bin/
 DOCS = doc/
-#INCL = include/
+INCL = /usr/local/include/eigen3/ 
 SCRIPTS = recolte_data.sh
 
 FILES := $(shell find $(SRCDIR) -name '*.cpp')
@@ -11,21 +11,21 @@ OBJ:= $(FILES:$(SRCDIR)%.cpp=$(BIN)%.o)
 
 CC = g++
 FLAGS = -std=c++11
-LDLIBS = -D_REENTRANT -lm -D_GNU_SOURCE
+LDLIBS = -D_REENTRANT -lm -D_GNU_SOURCE 
 
 .PHONY: all
 all: $(NAME) scripts
 
 $(NAME): $(OBJ)
 	@printf "[\e[1;34mEn cours\e[0m] Assemblement\n"
-#	$(CC) -o $(NAME) $(FLAGS) -I $(INCL) $(OBJ) $(LDLIBS)
-	$(CC) -o $(NAME) $(FLAGS) $(OBJ) $(LDLIBS)
+	$(CC) -o $(NAME) $(FLAGS) -I $(INCL) $(OBJ) $(LDLIBS)
+#	$(CC) -o $(NAME) $(FLAGS) $(OBJ) $(LDLIBS)
 	@printf "[\e[1;32mOK\e[0m] Assemblement finie\n"
 
 $(BIN)%.o: $(SRCDIR)%.cpp
 	@mkdir -p $(dir $@)
-#	$(CC) -c $(FLAGS) -I $(INCL) -o $@ $< $(LDLIBS)
-	$(CC) -c $(FLAGS) -o $@ $< $(LDLIBS)
+	$(CC) -c $(FLAGS) -I $(INCL) -o $@ $< $(LDLIBS)
+#	$(CC) -c $(FLAGS) -o $@ $< $(LDLIBS)
 
 .PHONY: scripts
 scripts:
