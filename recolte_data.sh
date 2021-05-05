@@ -18,6 +18,15 @@ done
 rm -rf RATP_GTFS_FULL.zip
 fi
 
+if [ ! -d "real_data" ]; then
+    curl http://www.lix.polytechnique.fr/Labo/Gleb.POGUDIN/files/dataRATP.zip --output real_data.zip
+    unzip real_data.zip -d real_data
+for f in $(find ./real_data -type f); do 
+    mv -- "$f" "real_data/$(basename -- "$f" .txt).csv"
+done
+    rm -rf real_data.zip
+    rm -rf real_data/data
+fi
 
 for i in 4 5 6 7 8 9; do
 if [ ! -f "trafic-annuel-entrant-par-station-du-reseau-ferre-201$i.csv" ]; then
