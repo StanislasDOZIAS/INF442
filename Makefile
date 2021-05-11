@@ -3,7 +3,8 @@ ZIP_FILE = DOZIAS_DURAND_$(NAME).zip
 SRCDIR = src/
 BIN = bin/
 DOCS = doc/
-INCL = /usr/local/include/eigen3/ 
+INCL = /usr/local/include/eigen3/
+ANN_LIB = /usr/local/ann-1.1.2/lib
 SCRIPTS = recolte_data.sh
 
 FILES := $(shell find $(SRCDIR) -name '*.cpp')
@@ -11,7 +12,7 @@ OBJ:= $(FILES:$(SRCDIR)%.cpp=$(BIN)%.o)
 
 CC = g++
 FLAGS = -std=c++11
-LDLIBS = -D_REENTRANT -lm -D_GNU_SOURCE 
+LDLIBS = -D_REENTRANT -lm -D_GNU_SOURCE -lANN -L$(ANN_LIB)
 
 .PHONY: all
 all: $(NAME) scripts
