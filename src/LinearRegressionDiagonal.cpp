@@ -15,23 +15,25 @@ LinearRegressionDiagonal::LinearRegressionDiagonal( Dataset* dataset, int col_re
 void LinearRegressionDiagonal::SetCoefficients() {
 	int n = m_dataset->GetNbrSamples();
 	int d = m_dataset->GetDim();
+
+	MatrixXd beta = MatrixXd::Zero(m_X->cols(), m_Y->cols());
 	MatrixXd X_t = m_X->transpose();
-
-	MatrixXd A = X_t * (*m_X);
-
-	MatrixXd B = X_t * (*m_Y);
-
-	for(unsigned i = 0; i < A.rows(); ++i) {
-		for(unsigned j = 0; j < B.cols(); ++j) {
-			if(i != j && i != 0){
-				A(i,j) = 0;
-				B(i,j) = 0;
-			}
-		}
-	}
 	
-
-	MatrixXd beta = A.colPivHouseholderQr().solve(B);
+	for(int i = 0; i < m_Y->cols(); i++){
+		MatrixXd X_tmp(n, 2);
+		
+		
+		for(unsigned j = 0; j < n; ++j) {
+			X_tmp(j,0) = (*m_X)(j,0);
+			X_tmp(j,1) = (*m_X)(j,i+1);
+		}
+		MatrixXd X_t_tmp = X_tmp.transpose();
+		MatrixXd A = X_t_tmp * X_tmp;
+		MatrixXd B = X_t_tmp * (*m_Y).col(i);
+		MatrixXd tmp = A.colPivHouseholderQr().solve(B);
+		beta(0,i) = tmp(0,0);
+		beta(i+1,i) = tmp(1,0);
+	}
 
 	m_beta = new MatrixXd(beta);
 }

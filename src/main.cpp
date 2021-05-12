@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <typeinfo> 
+#include <time.h>
 
 #include "./Dataset.hpp"
 #include "./LinearRegression.hpp"
@@ -17,13 +18,23 @@ void print_vec(Eigen::VectorXd const &v){
 
 template<class T>
 void test_regr_linear(Dataset &train_data, Dataset &test_data, int col_regr){
-	T tester(&train_data, col_regr);
+	float temps;
+    clock_t t1, t2;
+ 
+    t1 = clock();
+ 
+    T tester(&train_data, col_regr);
+     
+    t2 = clock();
+    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+	
 
 	std::cout << std::endl <<
 	"Régression linéaire " << typeid(T).name() << std::endl
          << std::endl;
 
 	//tester.ShowCoefficients();
+    std::cout << "Time of execution = " << temps << std::endl;
 
     std::cout << std::endl;
     std::cout << "Testing the Estimate method on the first sample of test_file" << std::endl;
@@ -95,8 +106,8 @@ int main(int argc, char **argv)
 	test_data.Show(0);
 
 	test_regr_linear<LinearRegressionConstant>(train_data, test_data, col_regr);
-	test_regr_linear<LinearRegression>(train_data, test_data, col_regr);
 	test_regr_linear<LinearRegressionDiagonal>(train_data, test_data, col_regr);
+	test_regr_linear<LinearRegression>(train_data, test_data, col_regr);
 
 
 	return 0;
