@@ -1,4 +1,4 @@
-#include "LinearRegression.hpp"
+#include "LinearRegressionConstant.hpp"
 #include "Dataset.hpp"
 #include "Regression.hpp"
 #include<iostream>
@@ -7,31 +7,40 @@
 
 using namespace Eigen;
 
-LinearRegression::LinearRegression( Dataset* dataset, int col_regr ) 
+LinearRegressionConstant::LinearRegressionConstant( Dataset* dataset, int col_regr ) 
 : Regression(dataset, col_regr) {
 	SetCoefficients();
 }
 
-LinearRegression::~LinearRegression() {
-	m_beta->resize(0, 0);
-	delete m_beta;
-}
+LinearRegressionConstant::~LinearRegressionConstant() {}
 
-void LinearRegression::SetCoefficients() {
+void LinearRegressionConstant::SetCoefficients() {
 	int n = m_dataset->GetNbrSamples();
 	int d = m_dataset->GetDim();
-	MatrixXd X_t = m_X->transpose();
+    MatrixXd X = m_X->rightCols(m_X->cols() - 1);
+	MatrixXd X_t = X.transpose();
 
-	MatrixXd A = X_t * (*m_X);
+	MatrixXd A = X_t * X;
 
 	MatrixXd B = X_t * (*m_Y);
 
-	MatrixXd beta = A.colPivHouseholderQr().solve(B);
+	MatrixXd beta(A.rows(), A.cols());
 
-	m_beta = new MatrixXd(beta);
+    
+    for(unsigned i = 0; i < A.rows(); ++i) {
+        
+        for(unsigned j = 0; j < A.cols(); ++j) {
+            beta(i,j) = (A(i,j) != 0) ? B(i,j) / A(i,j) : 0;
+        }
+        
+    }
+    
+
+
+	m_beta = beta.mean();
 }
 
-const Eigen::MatrixXd* LinearRegression::GetCoefficients() const {
+const double LinearRegressionConstant::GetCoefficients() const {
 	if (!m_beta) {
 		std::cout<<"Coefficients have not been allocated."<<std::endl;
 		return NULL;
@@ -39,24 +48,13 @@ const Eigen::MatrixXd* LinearRegression::GetCoefficients() const {
 	return m_beta;
 }
 
-void LinearRegression::ShowCoefficients() const {
-	if (!m_beta) {
-		std::cout<<"Coefficients have not been allocated."<<std::endl;
-		return;
-	}
-	
+void LinearRegressionConstant::ShowCoefficients() const {
 	std::cout<< "beta = (";
-	for (int i=0; i<m_beta->rows(); i++) {
-		for(unsigned j = 0; j < m_beta->cols(); ++j) {
-			std::cout<< " " << (*m_beta)(i, j);
-		}
-		
-		std::cout<<std::endl;
-	}
+	std::cout<< " " << m_beta;
 	std::cout << " )"<<std::endl;
 }
 
-void LinearRegression::SumsOfSquares( Dataset* dataset, double& ess, double& rss, double& tss ) const {
+void LinearRegressionConstant::SumsOfSquares( Dataset* dataset, double& ess, double& rss, double& tss ) const {
 	assert(dataset->GetDim()==m_dataset->GetDim());
 	int n = dataset->GetNbrSamples();
 	int d = m_dataset->GetDim();
@@ -85,7 +83,8 @@ void LinearRegression::SumsOfSquares( Dataset* dataset, double& ess, double& rss
 	}
 }
 
-Eigen::VectorXd LinearRegression::Estimate( const Eigen::VectorXd & x ) const {
-	VectorXd v = (*m_beta).transpose() * x;
+Eigen::VectorXd LinearRegressionConstant::Estimate( const Eigen::VectorXd & x ) const {
+    VectorXd xx = x.tail(x.size() - 1);
+	VectorXd v = x * m_beta;
 	return v;
 }

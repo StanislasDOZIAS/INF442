@@ -4,37 +4,38 @@
 #include "Regression.hpp"
 #include <math.h> 
 
-#ifndef LINEARREGRESSION_HPP
-#define LINEARREGRESSION_HPP
+#ifndef LINEARREGRESSIONCONSTANT_HPP
+#define LINEARREGRESSIONCONSTANT_HPP
+
 /**
-  The LinearRegression class inherits from the Regression class, stores the coefficient and provides a bunch of specific methods.
+  The LinearRegressionConstant class inherits from the Regression class, stores the coefficient and provides a bunch of specific methods.
 */
-class LinearRegression : public Regression {
+class LinearRegressionConstant : public Regression {
 protected:
     /**
-      The linear regression coefficient.
+      The linear regression constant coefficient.
     */
-	Eigen::MatrixXd* m_beta;
-
+	double m_beta;
+  
 public:
     /**
       The linear regression method fits a linear regression coefficient to col_regr using the provided Dataset. It calls setCoefficients under the hood.
      @param dataset a pointer to a dataset
      @param m_col_regr the integer of the column index of Y
     */
-	LinearRegression(Dataset* dataset, int col_regr);
+	LinearRegressionConstant(Dataset* dataset, int col_regr);
     /**
       The destructor (frees m_beta).
     */
-  ~LinearRegression();
+  ~LinearRegressionConstant();
     /**
-      The setter method of the private attribute m_beta which is called by LinearRegression.
+      The setter method of the private attribute m_beta which is called by LinearRegressionConstant.
     */
 	void SetCoefficients();
   /**
       The getter method of the private attribute m_beta.
     */
-	const Eigen::MatrixXd* GetCoefficients() const;
+	const double GetCoefficients() const;
     /**
       Prints the contents of the private attribute m_beta.
     */
@@ -50,4 +51,4 @@ public:
 	Eigen::VectorXd Estimate( const Eigen::VectorXd & x ) const;
 };
 
-#endif //LINEARREGRESSION_HPP
+#endif //LinearRegressionConstant_HPP

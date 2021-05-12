@@ -1,8 +1,12 @@
 #include <iostream>
 #include <cmath>
+#include <typeinfo> 
 
 #include "./Dataset.hpp"
 #include "./LinearRegression.hpp"
+#include "./LinearRegressionConstant.hpp"
+#include "./LinearRegression.hpp"
+#include "./LinearRegressionDiagonal.hpp"
 
 void print_vec(Eigen::VectorXd const &v){
 	for(unsigned i = 0; i < v.size(); ++i) {
@@ -10,6 +14,54 @@ void print_vec(Eigen::VectorXd const &v){
 	}
 	std::cout << std::endl;
 }
+
+template<class T>
+void test_regr_linear(Dataset &train_data, Dataset &test_data, int col_regr){
+	T tester(&train_data, col_regr);
+
+	std::cout << std::endl <<
+	"Régression linéaire " << typeid(T).name() << std::endl
+         << std::endl;
+
+	//tester.ShowCoefficients();
+
+    std::cout << std::endl;
+    std::cout << "Testing the Estimate method on the first sample of test_file" << std::endl;
+    std::vector<double> first_sample = test_data.GetInstance(0);
+    Eigen::VectorXd first_sample_eigen(col_regr + 1);
+    Eigen::VectorXd first_res_eigen(col_regr);
+	first_sample_eigen(0) = 1;
+    for (int j = 0; j < col_regr; j++) {
+        first_sample_eigen(j+1) = first_sample[j];
+		first_res_eigen(j) = first_sample[j + col_regr];
+    }
+
+    std::cout << "The true value of y for the first sample of test_file is:" << std::endl;
+    print_vec(first_res_eigen);
+    std::cout << "The estimated value of y for the first sample of test_file is:" << std::endl;
+    Eigen::VectorXd cev = tester.Estimate(first_sample_eigen);
+    print_vec(cev);
+
+    std::cout
+         << std::endl;
+    double ct_ess, ct_rss, ct_tss;
+    tester.SumsOfSquares(&train_data, ct_ess, ct_rss, ct_tss);
+    std::cout << "Sums of Squares wrt training set:" << std::endl
+              << " ESS=" << ct_ess << std::endl
+              << " RSS=" << ct_rss << std::endl
+              << " TSS=" << ct_tss << std::endl
+              << " R2=" << ct_ess / ct_tss << std::endl
+              << " MSE=" << ct_rss / train_data.GetNbrSamples() << std::endl;
+    double cr_ess, cr_rss, cr_tss;
+    tester.SumsOfSquares(&test_data, cr_ess, cr_rss, cr_tss);
+    std::cout << "Sums of Squares wrt regression set:" << std::endl
+              << " ESS=" << cr_ess << std::endl
+              << " RSS=" << cr_rss << std::endl
+              << " TSS=" << cr_tss << std::endl
+              << " MSE=" << cr_rss / test_data.GetNbrSamples() << std::endl;
+
+}
+
 
 int main(int argc, char **argv)
 {
@@ -42,45 +94,9 @@ int main(int argc, char **argv)
 	train_data.Show(0);
 	test_data.Show(0);
 
-	LinearRegression tester(&train_data, col_regr);
-
-	tester.ShowCoefficients();
-
-    std::cout << std::endl
-         << std::endl;
-    std::cout << "Testing the Estimate method on the first sample of test_file" << std::endl;
-    std::vector<double> first_sample = test_data.GetInstance(0);
-    Eigen::VectorXd first_sample_eigen(col_regr + 1);
-    Eigen::VectorXd first_res_eigen(col_regr);
-	first_sample_eigen(0) = 1;
-    for (int j = 0; j < col_regr; j++) {
-        first_sample_eigen(j+1) = first_sample[j];
-		first_res_eigen(j) = first_sample[j + col_regr];
-    }
-
-    std::cout << "The true value of y for the first sample of test_file is:" << std::endl;
-    print_vec(first_res_eigen);
-    std::cout << "The estimated value of y for the first sample of test_file is:" << std::endl;
-    Eigen::VectorXd cev = tester.Estimate(first_sample_eigen);
-    print_vec(cev);
-
-    std::cout << std::endl
-         << std::endl;
-    double ct_ess, ct_rss, ct_tss;
-    tester.SumsOfSquares(&train_data, ct_ess, ct_rss, ct_tss);
-    std::cout << "Sums of Squares wrt training set:" << std::endl
-              << " ESS=" << ct_ess << std::endl
-              << " RSS=" << ct_rss << std::endl
-              << " TSS=" << ct_tss << std::endl
-              << " R2=" << ct_ess / ct_tss << std::endl
-              << " MSE=" << ct_rss / train_data.GetNbrSamples() << std::endl;
-    double cr_ess, cr_rss, cr_tss;
-    tester.SumsOfSquares(&test_data, cr_ess, cr_rss, cr_tss);
-    std::cout << "Sums of Squares wrt regression set:" << std::endl
-              << " ESS=" << cr_ess << std::endl
-              << " RSS=" << cr_rss << std::endl
-              << " TSS=" << cr_tss << std::endl
-              << " MSE=" << cr_rss / test_data.GetNbrSamples() << std::endl;
+	test_regr_linear<LinearRegressionConstant>(train_data, test_data, col_regr);
+	test_regr_linear<LinearRegression>(train_data, test_data, col_regr);
+	test_regr_linear<LinearRegressionDiagonal>(train_data, test_data, col_regr);
 
 
 	return 0;
