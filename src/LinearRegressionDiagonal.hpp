@@ -20,6 +20,9 @@ public:
     */
 	LinearRegressionDiagonal(Dataset* dataset, int col_regr);
 
+  /**
+      The setter method of the private attribute m_beta which is called by LinearRegressionDiagonal.
+  */
 	void SetCoefficients();
 };
 

@@ -19,7 +19,7 @@ protected:
   
 public:
     /**
-      The linear regression method fits a linear regression coefficient to col_regr using the provided Dataset. It calls setCoefficients under the hood.
+      The linear regression method fits a linear regression coefficient to (col_regr, end) using the provided Dataset. It calls setCoefficients under the hood.
      @param dataset a pointer to a dataset
      @param m_col_regr the integer of the column index of Y
     */

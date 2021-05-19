@@ -55,8 +55,16 @@ class Dataset {
         */
         std::vector<std::vector<double> > m_instances;
 
+        /**
+         * @brief Name of the read file
+         * 
+         */
         string filename;
 
+        /**
+         * @brief Vector of the header
+         * 
+         */
         std::vector<string> headers;
 };
 #endif //DATASET_HPP
