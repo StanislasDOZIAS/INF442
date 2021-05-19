@@ -1,22 +1,20 @@
-# INF442
+# INF442 Project 7
 
+## If you are on a LINUX OS, please do the following steps :
+```
+make scripts
+make
+./inf422
+```
+You can access to the documentation with `make doc`
 
-### TRUCS A FAIRE EN PRIO :
+## If you are on a WINDOWS OS, please do the following steps :
 
-## Objectif :
- - faire de la pandémisation (prédire les horaires pendant le confinnement/couvre-feu à partir des horaires "normaux"
+- execute `recolte_data.sh`, it will return an error because windows can't execute python3
+- execute the python script `preprocessing.py` or the notebook `preprocessing.ipynb` (it will create the datasets for the notebook `statistics.ipynb`).
 
-## Concrètement :
- - preprocessing des données en Python pour avoir un beau csv avec plein de NOMBRES dedans (STAN) : mercredi aprem
- - utilisation du TD7 pour faire de la regressions (XAVIER) : jusqu'à jeudi soir ???
- 
- => gros check-up vendredi pour voir ce qu'on peut faire durant le WE pour améliorer les choses (genre différencier couvre-feu confinnement ?)
+You can access to the report in the file `DOZIAS_DURAND_rapport.pdf`, the link to the GitHub project is inside.
 
+Have a good reading,
 
-
-
-
-### Quelques stats possibles (utiles ? inutiles ?) : 
-
- - Les passages sont-il espacés régulièrement ?
- - ???
+Stanislas DOZIAS and Xavier DURAND
