@@ -43,7 +43,7 @@ void LinearRegressionConstant::SetCoefficients() {
 const double LinearRegressionConstant::GetCoefficients() const {
 	if (!m_beta) {
 		std::cout<<"Coefficients have not been allocated."<<std::endl;
-		return NULL;
+		return 0;
 	}
 	return m_beta;
 }

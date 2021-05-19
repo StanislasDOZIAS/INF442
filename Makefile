@@ -70,5 +70,5 @@ doc: cleandoc
 zip:
 	@printf "[\e[1;34mEn cours\e[0m] Début du zippage\n"
 #	@zip -r $(ZIP_FILE) README.md Makefile $(SRCDIR) documentation $(INCL) DOZIAS_DURAND_rapport.pdf
-	@zip -r $(ZIP_FILE) README.md Makefile $(SRCDIR) documentation DOZIAS_DURAND_rapport.pdf
+	@zip -r $(ZIP_FILE) README.md Makefile $(SRCDIR) documentation DOZIAS_DURAND_rapport.pdf $(SCRIPTS) statistique.ipynb preprocessing.ipynb preprocessing.py
 	@printf "[\e[1;32mOK\e[0m] Zippage finie\n"
