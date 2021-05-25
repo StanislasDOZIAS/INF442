@@ -33,7 +33,7 @@ void test_regr_linear(Dataset &train_data, Dataset &test_data, int col_regr){
 	"Régression linéaire " << typeid(T).name() << std::endl
          << std::endl;
 
-	//tester.ShowCoefficients();
+	tester.ShowCoefficients();
     std::cout << "Time of execution = " << temps << std::endl;
 
     std::cout << std::endl;

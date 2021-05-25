@@ -48,7 +48,7 @@ void LinearRegression::ShowCoefficients() const {
 	std::cout<< "beta = (";
 	for (int i=0; i<m_beta->rows(); i++) {
 		for(unsigned j = 0; j < m_beta->cols(); ++j) {
-			std::cout<< " " << (*m_beta)(i, j);
+			std::cout<< " " << int((*m_beta)(i, j) * 1000) * 0.001;
 		}
 		
 		std::cout<<std::endl;
